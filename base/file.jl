@@ -473,12 +473,12 @@ function prepare_for_deletion(path::AbstractString)
         return
     end
 
-    try chmod(path, filemode(path) | 0o220)
+    try chmod(path, filemode(path) | 0o222)
     catch; end
     for (root, dirs, files) in walkdir(path)
         for dir in dirs
             dpath = joinpath(root, dir)
-            try chmod(dpath, filemode(dpath) | 0o220)
+            try chmod(dpath, filemode(dpath) | 0o222)
             catch; end
         end
     end
