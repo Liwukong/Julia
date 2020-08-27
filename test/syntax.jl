@@ -2325,3 +2325,14 @@ end
 @test_throws ParseError("invalid operator \".<---\"") Meta.parse("1 .<--- 2")
 @test_throws ParseError("invalid operator \"--\"") Meta.parse("a---b")
 @test_throws ParseError("invalid operator \".--\"") Meta.parse("a.---b")
+
+# issue #37228
+function f37228(x)
+    if isodd(x[1]) && all(iseven(y) for y in x[2:end])
+        return 3
+    end
+    return 0
+end
+@test f37228([1,2,4,8]) == 3
+@test f37228([2,2,4,8]) == 0
+@test f37228([3,3,4,8]) == 0
