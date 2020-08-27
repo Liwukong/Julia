@@ -122,6 +122,14 @@ endif
 
 
 COMMON_LIBS := -L$(build_shlibdir) -L$(build_libdir) $(LIBUV) $(LIBUTF8PROC) $(NO_WHOLE_ARCHIVE) $(LIBUNWIND) $(LLVMLINK) $(OSLIBS)
+
+# If we're on a system with an untrusted system libm, statically link it into libjulia
+ifeq ($(USE_SYSTEM_LIBM),0)
+ifneq ($(UNTRUSTED_SYSTEM_LIBM),0)
+COMMON_LIBS += $(WHOLE_ARCHIVE) $(build_libdir)/libopenlibm.a $(NO_WHOLE_ARCHIVE)
+endif
+endif
+
 DEBUG_LIBS := $(WHOLE_ARCHIVE) $(BUILDDIR)/flisp/libflisp-debug.a $(WHOLE_ARCHIVE) $(BUILDDIR)/support/libsupport-debug.a $(COMMON_LIBS)
 RELEASE_LIBS := $(WHOLE_ARCHIVE) $(BUILDDIR)/flisp/libflisp.a $(WHOLE_ARCHIVE) $(BUILDDIR)/support/libsupport.a $(COMMON_LIBS)
 
